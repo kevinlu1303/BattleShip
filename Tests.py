@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 from Ship import Ship
 from Board import Board 
 from ShipPlacer import ShipPlacer
@@ -12,5 +12,7 @@ def test_ship_placer():
     board = Board(10,10)
     board.place_ships()
     print([ship.get_coordinates() for ship in board.ships])
+
+
 test_ship()
 test_ship_placer()

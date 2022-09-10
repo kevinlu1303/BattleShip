@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
-from ShipPlacer import ShipPlacer
+
+from turtle import Turtle
+
+
 class Board:
     width = 0
     height = 0 
@@ -9,14 +12,47 @@ class Board:
         self.ships = []
         self.occupied_coords = []
         self.hit_coords = []
+        self.missed_coords = []
+        self.board_strategy = board_strategy
 
-    def check_boundaries(self,x,y):
+    def check_boundaries(self,coords):
+        x,y = coords[0],coords[1]
         within_boundaries = True
         if x > self.width:
             within_boundaries = False
         if y > self.height:
             within_boundaries = False
         return within_boundaries
+
+    def check_for_hit(self, coords):
+        '''
+        returns true if a ship took a hit, false if not
+        updates the hit_coords, occupied_coords, and updates ships
+        '''
+        if coords in self.occupied_coords:
+            self.hit_coords.append(coords)
+            for ship in self.ships:
+                if ship.check_for_coords(coords):
+                    ship.take_hit(coords)
+                    if ship.is_sunk():
+                        print('{} has been sunk!\n'.format(ship.name))
+                    return True
+        else:
+            self.missed_coords.append(coords)
+            return False
+    def has_been_hit(self, coords):
+        '''
+        checks if the attacking player has already hit these coords
+        called by game_loop of Game class in game.py
+        '''
+        if coords in self.hit_coords or coords in self.missed_coords:
+            return True
+        return False
+    def all_ships_sunk(self):
+        for ship in self.ships:
+            if not ship.is_sunk:
+                return False
+        return True
     
     def place_ships(self):
         ''' can take a user array of coordinate and rotation'''
@@ -37,3 +73,4 @@ class Board:
                 if y == self.height - 1:
                     print(row)
                 
+from ShipPlacer import ShipPlacer
