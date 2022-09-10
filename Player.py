@@ -1,5 +1,18 @@
 #!/usr/bin/env python3
+'''
+Player Class - mostly responsible for holding board and name for display/storage purposes and takes
+the user input for next attack
+    + name - name of player for display purposes
+    + player_board - board of the player which holds all of their ships
+add_board - creates board for player once we've recieve size and strategy
+get_board - recieve player_board
+take_action - takes in user input for next attack coordinates, calls error if they are outside of board
+or already hit
 
+ComputerPlayer Class - extends player class, overrides the take_action class
+
+    overrides take_action - randomly generates attack coordiantes, checks if computer has already hit them
+'''
 from Board import Board
 import numpy as np
 
@@ -32,4 +45,4 @@ class Player:
 class ComputerPlayer(Player):
     is_computer = True
     def take_action(self):
-        return [np.random.randint(0, self.player_board.width),np.random.randint(0, self.player_board.height)]
+        return [np.random.randint(1, self.player_board.width + 1),np.random.randint(1, self.player_board.height + 1)]

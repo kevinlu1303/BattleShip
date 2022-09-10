@@ -1,6 +1,24 @@
 #!/usr/bin/env python3
 '''
-Can have a random strategy tha
+ShipPlacer Class - takes in board and strategy and places default ships onto board
+
+    +strategy - string which lets the class know which placer func to use (only supports random atm)
+    +board - the board class that the ships will be placed on
+    +ships - list of ships
+    +occupied coords - list of coords that are already occupied by a ship
+
+place_ships- Takes the board and calls a placer function to get coordinates and rotations
+for a ship to fit so that they dont overlap or break the boundary.
+
+check_if_overlap - takes in a coordinate and rotations for a prospective ship and checks if
+these are already occupied on the board
+
+random_placer - takes in the width and height of the board and the length of the ship
+and looks for randomly generated coordinates and rotations
+
+get_ships - returns list of ships
+
+get_occupied_cords - returns occupied coords
 '''
 from Board import Board
 from Ship import Ship
@@ -9,7 +27,7 @@ import numpy as np
 class ShipPlacer:
     names = ['Destroyer', 'Submarine','Cruiser','Battleship', 'Carrier']
     lengths = [2,3,4,4,5]
-    def __init__(self, strategy, board):
+    def __init__(self, strategy, board, user_input = []):
         self.strategy = strategy
         self.board = board
         self.ships = []
@@ -51,11 +69,11 @@ class ShipPlacer:
                 2-bottom
                 3-left
         """
-        rand_x = np.random.randint(0,width)
-        rand_y = np.random.randint(0,height)
+        rand_x = np.random.randint(1,width+1)
+        rand_y = np.random.randint(1,height+1)
         while [rand_x, rand_y] in self.occupied_coords:
-            rand_x = np.random.randint(0,width)
-            rand_y = np.random.randint(0,height)
+            rand_x = np.random.randint(1,width + 1)
+            rand_y = np.random.randint(1,height + 1)
         rand_rotation = np.random.randint(0,4)
         through_bottom = rand_y - length < 0
         through_top = rand_y + length > height

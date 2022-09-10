@@ -1,4 +1,20 @@
 #!/usr/bin/env python3
+''''
+Ship class - represents a ship, mostly responsible for holding data and checking if this ship has been sunk
+
+    + name - name of ship corresponding to conventional battleship
+    + length - length of said ship
+    + coordinates - which coordinates on the board it lies on
+    + hit_coords - array that signifies which parts of the ship have been hit thus far, when its all 1's the ship is sunk
+    + is_sunk - True if ship is completely sunk, can update gui once implemented
+
+check_for_coords - checks if a coordinate overlaps with the ship
+take_hit - updates the hit_coords if the coord lies within the ship
+check_if_sunk - sees if all the coords of the ship have been hit, (self.hit_coords == [1,...])
+set_coordinates - takes in starting coords, length, and rotation to return all of its internal coordinates
+get_coordinates - returns self.coordinates
+is_sunk - returns self.is_sunk
+'''
 
 class Ship:
     
@@ -6,7 +22,6 @@ class Ship:
         self.name = name
         self.length = length
         self.coordinates = self.set_coordinates(x,y,length, rotation)
-        self.rotation = rotation
         self.hit_coords = [0 for i in range(length)]
         self.sunk = False
     def check_for_coords(self, coords):

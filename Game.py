@@ -1,5 +1,27 @@
 #!/usr/bin/env python3
 '''
+Game Class - responsible for holding the player objects, and instantiating them with their board and ships
+also responsible for the game loop and the turn based logic 
+
+    +player1 - whichever player wrote their name first
+    +player2 - whichever player wrote their name last or computer if singleplayer
+    +attacking_player - intially player1, switches each turn
+    +defending_player - initially player2, switches each turn
+
+game_loop - generates a while loop that gets the attacking players action, checks if it was a hit, then switches players
+at the end of each loop, if there was a hit, checks to see if that ship has sunk or if all ships have sunk, therefore a win
+get_attacking_action - calls the take_action method of the attacking player's class. checks for a hit or miss
+find_computer_attacking_action - similar to get_attacking_action. displays slightly differently
+switch_players - simply switches who is attacking and who is defending
+print_players_board - prints the board of both players to check for hits.
+
+_____________
+Funcs
+_____________
+get_dimensions - asks user if they would like to use default size map or custom
+get_player_width_height - gets user input on the width and height of custom map
+get_players - get number of players and their name
+main - gets user input then instantiates the game class and begins the game
 
 '''
 from operator import is_
@@ -36,7 +58,10 @@ class Game:
             else:
                 print('{} was a miss!\n'.format(str(coords)))
                 input('Press enter to continue...')
-       
+            if self.defending_player.player_board.all_ships_sunk():
+                return self.attacking_player
+            if self.attacking_player.player_board.all_ships_sunk():
+                return self.defending_player
             self.switch_players()
         return self.defending_player
 
@@ -151,7 +176,7 @@ def main():
     game = Game(player_1, player_2,width,height)
     game.print_player_boards()
     winning_player = game.game_loop()
-    os.system_clear
+    os.system('clear')
     print("{} is the Winning Player!".format(winning_player.name))
     print("{} is the Winning Player!".format(winning_player.name))
     print("{} is the Winning Player!".format(winning_player.name))
