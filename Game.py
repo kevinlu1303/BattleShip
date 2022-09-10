@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
+'''
 
+'''
 from operator import is_
 import os
 
@@ -22,22 +24,27 @@ class Game:
     def game_loop(self):
         is_game_over = False
         while (is_game_over == False):
+            os.system('clear')
             coords = self.get_attacking_action()
-            print('{} has chosen to attack at {}!\n'.format(self.attacking_player.name,str(coords)))
+            os.system('clear')
+            print('\n{} has chosen to attack at {}!\n'.format(self.attacking_player.name,str(coords)))
             if self.defending_player.player_board.check_for_hit(coords):
                 print('{} was a hit!\n'.format(str(coords)))
+                input('Press enter to continue...')
                 if self.defending_player.player_board.all_ships_sunk():
                     is_game_over ==True
             else:
                 print('{} was a miss!\n'.format(str(coords)))
+                input('Press enter to continue...')
+       
             self.switch_players()
         return self.defending_player
 
     def get_attacking_action(self):
         if self.attacking_player.is_computer:
             return self.find_computer_attacking_action()
-        print('{} are the coordinates you have hit with'.format(self.defending_player.player_board.hit_coords))
-        print('{} are the coordinates you have missed with'.format(self.defending_player.player_board.missed_coords))
+        print('{} are the coordinates you have hit with.\n'.format(self.defending_player.player_board.hit_coords))
+        print('{} are the coordinates you have missed with.\n'.format(self.defending_player.player_board.missed_coords))
         attack_coords = self.attacking_player.take_action() 
         if self.defending_player.player_board.has_been_hit(attack_coords):
             print("You have already hit this area.\n")
@@ -61,6 +68,7 @@ class Game:
         self.player1.get_board()
         print('{}\'s board\n'.format(self.player2.name))
         self.player2.get_board()
+        input('Press enter to continue...')
 
     
 
@@ -70,7 +78,9 @@ class Game:
 FUNCTIONS USED TO GET USER INPUT AT START UP
 '''
 def get_dimensions():
-
+    '''
+    Lets the user choose between the default 10 x 10 rectangular map or custom size for shorter or longer games
+    '''
     width = 10
     height = 10
     default_or_custom = int(input('How big should the board be:\n   (0): Default(10x10)\n   (1): Custom\n'))
@@ -84,6 +94,10 @@ def get_dimensions():
 
     return width, height
 def get_players_width_height():
+    '''
+    If user chooses custom canvas size, this function will take
+    their input for width and height
+    '''
     width = input("Width (8-40):\n")
     if not width.isdigit():
         print("Please input an integer.\n")
@@ -102,6 +116,10 @@ def get_players_width_height():
         return get_players_width_height()
     return width, height
 def get_players():
+    '''
+    takes user input to find no. of players, single player
+    against computer or two players, also takes their names
+    '''
     player_count = input('How many people are playing, 1 or 2:\n')
     if not player_count.isdigit():
         print("Please input an integer\n")
@@ -125,13 +143,24 @@ def get_players():
     return player_1_name, player_2_name
 
 ''' 
-GAME LOOP
+Take user input and then start game loop
 '''
 def main():
     player_1, player_2 = get_players()
     width, height = get_dimensions()
     game = Game(player_1, player_2,width,height)
     game.print_player_boards()
-    return game.game_loop()
+    winning_player = game.game_loop()
+    os.system_clear
+    print("{} is the Winning Player!".format(winning_player.name))
+    print("{} is the Winning Player!".format(winning_player.name))
+    print("{} is the Winning Player!".format(winning_player.name))
+    print("{} is the Winning Player!".format(winning_player.name))
+    print("{} is the Winning Player!".format(winning_player.name))
+    continue_game = input('Continue?\n Press 0 to end.\n Press 1 to continue')
+    if continue_game:
+        main()
+    else:
+        print("Thank You For Playing")
 main()
     
